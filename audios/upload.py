@@ -26,7 +26,7 @@ f = open(sys.argv[1], "r")
 
 files = {'audio_file':f}
 headers = {'access-key': access_key, 'signature-version': signature_version, 'signature': sign, 'timestamp':timestamp}
-data = {'title':"api_test", "audio_id":1234, "bucket_name":"test", "data_type":"audio", "custom_key[]":"key1", "custom_value[]":"key2"}
+data = {'title':"api_test", "audio_id":1234, "bucket_name":"test", "data_type":"audio", "custom_key[0]":"key1", "custom_value[0]":"key2"}
 
 r = requests.post(requrl, files=files, data=data, headers=headers, verify=True)
 r.encoding = "utf-8"
