@@ -181,6 +181,7 @@
  		System.arraycopy(buffer, 0, postDatas, 0, bufferLen);
  		ACRCloudProtocolV1 a = new ACRCloudProtocolV1();
  		
+        // Replace "xxxxxxxx" below with your project's access_key and access_secret.
  		String result = a.recognize("ap-southeast-1.api.acrcloud.com", "xxxxxxxx", "xxxxxxxx", postDatas, "audio", 80000);
  		System.out.println(result);
  	}

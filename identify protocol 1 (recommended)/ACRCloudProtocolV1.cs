@@ -163,6 +163,7 @@ namespace ACRCloudWebAPITest
                using (BinaryReader reader = new BinaryReader(fs))
                {
                    byte[] datas = reader.ReadBytes((int)fs.Length);
+                   // Replace "xxxxxxxx" below with your project's access_key and access_secret.
                    string result = ACRCloudProtocolV1.recognize("ap-southeast-1.api.acrcloud.com", "xxxxxxxx", "xxxxxxxx", datas, "audio");
                    Console.WriteLine(result);
                }

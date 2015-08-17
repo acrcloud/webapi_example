@@ -1,11 +1,22 @@
+'''
+This is a demo program which implements ACRCloud Identify Protocol V1 with the third party library "requests".
+We recomment you implement your own app with "requests" too.
+You can install this python library by:
+1) sudo easy_install requests 
+2) sudo pip install requests
+'''
+
 import sys
 import os
 import base64
 import hmac
 import hashlib
 import time
-import requests  #sudo easy_install requests or sudo pip install requests
+import requests  
 
+'''
+Replace "xxxxxxxx" below with your project's access_key and access_secret.
+'''
 access_key = "xxxxxxxx"
 access_secret = "xxxxxxxx"
 

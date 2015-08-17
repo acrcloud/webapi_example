@@ -1,3 +1,7 @@
+'''
+This is a demo program which implements ACRCloud Identify Protocol V1 all by native python libraries.
+'''
+
 import sys
 import os
 import base64
@@ -39,6 +43,9 @@ def encode_multipart_formdata(fields, files):
     content_type = 'multipart/form-data; boundary=%s' % boundary
     return content_type, body
 
+'''
+Replace "xxxxxxxx" below with your project's access_key and access_secret.
+'''
 access_key = "xxxxxxxx"
 access_secret = "xxxxxxxx"
 
