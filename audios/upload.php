@@ -4,15 +4,21 @@
     $http_uri = '/v1/audios';
     $timestamp = time();
     $signature_version = '1';
-    $access_key = '0780b60d5696d6e2';
-    $access_secret = '8e5c66ff23918fe6c70b92d580fa38e7';
+    /*
+    This demo shows how to use the RESTful API to upload an audio file ( "data_type":"audio" ) into your bucket.
+    You can find account_access_key and account_access_secret in your account page.
+    "Dashboard" -> "Your user name" (top right corner) -> "My account" -> "Console API" -> "Create Key Pair". 
+    Be Careful, they are different with access_key and access_secret of your project.
+    */
+    $account_access_key = '0780b60d5696d6e2';
+    $account_access_secret = '8e5c66ff23918fe6c70b92d580fa38e7';
 
     $string_to_sign = $http_method . "\n" .
                       $http_uri ."\n" .
-                      $access_key . "\n" .
+                      $account_access_key . "\n" .
                       $signature_version . "\n" .
                       $timestamp;
-    $signature = hash_hmac("sha1",$string_to_sign,$access_secret,true);
+    $signature = hash_hmac("sha1",$string_to_sign,$account_access_secret,true);
     $signature = base64_encode($signature);
     // suported file formats: mp3,wav,wma,amr,ogg, ape,acc,spx,m4a,mp4,FLAC, etc 
     $file = $argv[1];
@@ -33,7 +39,7 @@
     );
     $headerArray = array();
     $headers = array(
-        'access-key' => $access_key,
+        'access-key' => $account_access_key,
         'timestamp' => $timestamp,
         'signature-version' => '1',
         'signature' => $signature
