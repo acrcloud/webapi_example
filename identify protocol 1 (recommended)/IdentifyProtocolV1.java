@@ -15,7 +15,7 @@
  
  import org.apache.commons.codec.binary.Base64;
  
- public class ACRCloudProtocolV1 {
+ public class IdentifyProtocolV1 {
  
  	private String encodeBase64(byte[] bstr) {
  		Base64 base64 = new Base64();
@@ -179,7 +179,7 @@
  		
  		byte[] postDatas = new byte[bufferLen];
  		System.arraycopy(buffer, 0, postDatas, 0, bufferLen);
- 		ACRCloudProtocolV1 a = new ACRCloudProtocolV1();
+ 		IdentifyProtocolV1 a = new IdentifyProtocolV1();
  		
         // Replace "xxxxxxxx" below with your project's access_key and access_secret.
  		String result = a.recognize("ap-southeast-1.api.acrcloud.com", "xxxxxxxx", "xxxxxxxx", postDatas, "audio", 80000);
