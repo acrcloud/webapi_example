@@ -7,6 +7,7 @@ import hmac
 import hashlib
 import time
 
+# Replace "xxxxxxxx" below with your project's access_key and access_secret.
 access_key = "xxxxxx"
 access_secret = "xxxxxx"
 

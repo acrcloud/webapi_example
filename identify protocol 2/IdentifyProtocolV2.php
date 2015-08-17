@@ -5,6 +5,8 @@ $http_uri = "/v1/identify";
 $data_type = "audio";
 $signature_version = "1" ;
 $timestamp = time() ;
+
+// Replace "xxxxxxxx" below with your project's access_key and access_secret.
 $access_key =  'xxxxxxxx';
 $access_secret =  'xxxxxxxx';
 

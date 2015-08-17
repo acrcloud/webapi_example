@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace ACRCloudWebAPITest
 {
-class ACRCloudProtocolV2
+class IdentifyProtocolV2
    {
       public static string postHttp(string url, IDictionary<string, string> datas, int timeout)
       {
@@ -130,7 +130,8 @@ class ACRCloudProtocolV2
               using (BinaryReader reader = new BinaryReader(fs))
               {
                   byte[] datas = reader.ReadBytes((int)fs.Length);
-                  string result = ACRCloudProtocolV2.recognize("ap-southeast-1.api.acrcloud.com", "xxxxxxxx", "xxxxxxxx", datas, "audio");
+                  // Replace "xxxxxxxx" below with your project's access_key and access_secret.
+                  string result = IdentifyProtocolV2.recognize("ap-southeast-1.api.acrcloud.com", "xxxxxxxx", "xxxxxxxx", datas, "audio");
                   Console.WriteLine(result);
               }
           }
