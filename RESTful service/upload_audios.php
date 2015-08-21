@@ -7,7 +7,7 @@
     /*
     This demo shows how to use the RESTful API to upload an audio file ( "data_type":"audio" ) into your bucket.
     You can find account_access_key and account_access_secret in your account page.
-    "Dashboard" -> "Your user name" (top right corner) -> "My account" -> "Console API" -> "Create Key Pair". 
+    "Dashboard" -> "Account" (top right corner) -> "RESTful API Keys" -> "Create Key Pair". 
     Be Careful, they are different with access_key and access_secret of your project.
     */
     $account_access_key = '0780b60d5696d6e2';
