@@ -52,7 +52,7 @@ access_secret = "xxxxxxxx"
 # suported file formats: mp3,wav,wma,amr,ogg, ape,acc,spx,m4a,mp4,FLAC, etc
 # File size: < 1M , You'de better cut large file to small file, within 15 seconds data size is better
 
-f = open(sys.argv[1], "r")
+f = open(sys.argv[1], "rb")
 sample_bytes = os.path.getsize(sys.argv[1])
 content = f.read()
 f.close()
