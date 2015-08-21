@@ -13,6 +13,7 @@
  import javax.crypto.Mac;
  import javax.crypto.spec.SecretKeySpec;
  
+ // import commons-codec-<version>.jar, download from http://commons.apache.org/proper/commons-codec/download_codec.cgi
  import org.apache.commons.codec.binary.Base64;
  
  public class IdentifyProtocolV1 {
