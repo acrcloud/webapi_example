@@ -1,4 +1,3 @@
-package com.acrcloud.restfulapi.demo;
 
 import java.io.File;
 import java.io.IOException;
