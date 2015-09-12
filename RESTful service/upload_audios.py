@@ -13,8 +13,8 @@ You can find account_access_key and account_access_secret in your account page.
 Log into http://console.acrcloud.com -> "Account" (top right corner) -> "RESTful API Keys" -> "Create Key Pair". 
 Be Careful, they are different with access_key and access_secret of your project.
 '''
-account_access_key = "0780b60d5696d6e2"
-account_access_secret = "8e5c66ff23918fe6c70b92d580fa38e7"
+account_access_key = "xxxxxxxx"
+account_access_secret = "xxxxxxxx"
 
 requrl = "https://api.acrcloud.com/v1/audios"
 http_method = "POST"
