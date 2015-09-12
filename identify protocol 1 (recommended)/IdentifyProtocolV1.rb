@@ -2,8 +2,8 @@ require 'openssl'
 require 'base64'
 require 'net/http/post/multipart'
 
-access_key = "3bf24f896ca489d3316f68507224251f"
-access_secret = "Ypq3DgMT0SUZGq96HTEp9f5vSNcp17Qe4M0kGHoE"
+access_key = "xxxxxxxx"
+access_secret = "xxxxxxxx"
 
 requrl = "http://ap-southeast-1.api.acrcloud.com/v1/identify"
 http_method = "POST"
