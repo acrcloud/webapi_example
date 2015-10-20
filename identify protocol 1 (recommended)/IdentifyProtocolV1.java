@@ -88,6 +88,7 @@
  			conn.connect();
  			out = new BufferedOutputStream(conn.getOutputStream());
  			out.write(postBufferStream.toByteArray());
+ 			out.flush();
  			int response = conn.getResponseCode();
  			if (response == HttpURLConnection.HTTP_OK) {
  				reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
