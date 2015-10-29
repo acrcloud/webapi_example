@@ -13,8 +13,8 @@ You can find account_access_key and account_access_secret in your account page.
 Log into http://console.acrcloud.com -> "Account" (top right corner) -> "RESTful API Keys" -> "Create Key Pair". 
 Be Careful, they are different with access_key and access_secret of your project.
 '''
-account_access_key = "3ab8187eea92c842"
-account_access_secret = "475723efd40bb3160b3163971343a7ef"
+account_access_key = "<your account access key>"
+account_access_secret = "<your account secret key>"
 
 requrl = "https://api.acrcloud.com/v1/monitors"
 http_method = "POST"
