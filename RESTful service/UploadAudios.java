@@ -27,6 +27,8 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -83,7 +85,9 @@ public class UploadAudios {
 			for (String key : postParams.keySet()) {
 				Object value = postParams.get(key);
 				if (value instanceof String || value instanceof Integer) {
-					mEntityBuilder.addTextBody(key, value + "");
+					ContentType contentType = ContentType.create("text/plain", "UTF-8");
+					StringBody stringBody = new StringBody(value+"", contentType);
+					mEntityBuilder.addPart(key, stringBody);
 				} else if (value instanceof File) {
 					mEntityBuilder.addBinaryBody(key, (File) value);
 				}
@@ -167,16 +171,16 @@ public class UploadAudios {
 	 */
 	public static void main(String[] args) {
 		String audioId = "XXX";
-		String audioTitle = "XXX";
-		String dataPath = "XXX";
+		String audioTitle = "xxx";
+		String dataPath = "./a.mp3";
 		String dataType = "audio"; // audio & fingerprint
-		String bucketName = "XXX";
-		String accessKey = "XXX";
-		String accessSecret = "XXX";
+		String bucketName = "<your bucket name>";
+		String accessKey = "<your console access_key>";
+		String accessSecret = "<your console access_secret>";
 
 		Map<String, String> userParams = new HashMap<String, String>();
-		userParams.put("key1", "value1");
-		userParams.put("key2", "value2");
+		userParams.put("<user-defined-key1>", "<user-defined-value1>");
+		userParams.put("<user-defined-key2>", "<user-defined-value2>");
 
 		UploadAudios ua = new UploadAudios();
 
