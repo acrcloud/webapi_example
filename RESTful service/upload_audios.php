@@ -31,7 +31,7 @@
         'title' => 'test',
         'audio_id' => '1234',
         'bucket_name' => '',
-        'data_type'=>'fingerprint',
+        'data_type'=>'audio',  // if you upload fingerprint file please set 'data_type'=>'fingerprint'
         'custom_key[0]' => 'key1',
         'custom_value[0]' => 'value1',
         'custom_key[1]' => 'key2',
