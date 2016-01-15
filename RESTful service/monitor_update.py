@@ -16,9 +16,9 @@ Be Careful, they are different with access_key and access_secret of your project
 account_access_key = "xxxxxx"
 account_access_secret = "xxxxxx"
 
-requrl = "https://api.acrcloud.com/v1/monitors/2104"
+requrl = "https://api.acrcloud.com/v1/monitor-streams/2104"
 http_method = "PUT"
-http_uri = "/v1/monitors/2104"
+http_uri = "/v1/monitor-streams/2104"
 signature_version = "1"
 timestamp = time.time()
 
