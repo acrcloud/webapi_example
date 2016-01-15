@@ -5,7 +5,7 @@ var request = require('request');
 
 var defaultOptions = {
   host: 'api.acrcloud.com',
-  endpoint: '/v1/monitors',
+  endpoint: '/v1/monitor-streams',
   signature_version: '1',
   access_key: '<your account access key>',
   access_secret: '<your account secret key>'
