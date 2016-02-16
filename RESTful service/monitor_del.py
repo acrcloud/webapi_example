@@ -16,9 +16,9 @@ Be Careful, they are different with access_key and access_secret of your project
 account_access_key = "3ab8187eea92c842"
 account_access_secret = "475723efd40bb3160b3163971343a7ef"
 
-requrl = "https://api.acrcloud.com/v1/monitors/1447"
+requrl = "https://api.acrcloud.com/v1/monitor-streams/1447"
 http_method = "DELETE"
-http_uri = "/v1/monitors/1447"
+http_uri = "/v1/monitor-streams/1447"
 signature_version = "1"
 timestamp = time.time()
 
