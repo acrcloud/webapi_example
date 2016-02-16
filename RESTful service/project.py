@@ -38,6 +38,24 @@ def create_project(name, type, buckets, audio_type, external_id):
     r.encoding = "utf-8"
     print r.text
 
+def update_project(name, buckets):
+    http_method = "PUT"
+    timestamp = time.time()
+    uri = '/v1/projects/'+name
+    
+    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
+
+    signature = sign(string_to_sign, option['access_secret'])
+ 
+    headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
+
+    data = {'name':name, 'buckets':buckets}
+    
+    requrl = "https://"+option['host'] + uri
+    r = requests.put(requrl, data=data, headers=headers, verify=True)
+    r.encoding = "utf-8"
+    print r.text
+
 def delete_project(name):
     http_method = "DELETE"
     timestamp = time.time()
@@ -57,5 +75,6 @@ def delete_project(name):
     print r.text
 
 if __name__ == "__main__":
-    create_project('test_api_project', 'AVR', "asdf", 1, "deezer,itunes,spotify")
+    create_project('test_api_project', 'AVR', "test_api_bucket", 1, "")
+    update_project('test_api_project', "ACRCloud Music")
     delete_project('test_api_project')
