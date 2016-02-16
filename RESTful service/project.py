@@ -49,7 +49,7 @@ def update_project(name, buckets):
  
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
 
-    data = {'name':name, 'buckets':buckets}
+    data = {'buckets':buckets}
     
     requrl = "https://"+option['host'] + uri
     r = requests.put(requrl, data=data, headers=headers, verify=True)
