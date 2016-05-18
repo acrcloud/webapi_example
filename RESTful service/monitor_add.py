@@ -29,7 +29,7 @@ sign = base64.b64encode(
         .digest())
 
 headers = {'access-key': account_access_key, 'signature-version': signature_version, 'signature': sign, 'timestamp':timestamp}
-data = {'url':'http://rs.ajmide.com/r_11/11.m3u8', 'stream_name':'test_cn', 'project_name':"asdfsdf", "region":"us-west-2"}
+data = {'url':'http://rs.xxxxxxxx.com/r_11/11.m3u8', 'stream_name':'test_cn', 'project_name':"asdfsdf", "region":"us-west-2"}
 
 r = requests.post(requrl, data=data, headers=headers, verify=True)
 r.encoding = "utf-8"
