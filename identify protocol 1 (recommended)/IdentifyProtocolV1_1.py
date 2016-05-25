@@ -15,12 +15,13 @@ import time
 import requests  
 
 '''
-Replace "xxxxxxxx" below with your project's access_key and access_secret.
+Replace "###...###" below with your project's access_key and access_secret.
 '''
-access_key = "xxxxxxxx"
-access_secret = "xxxxxxxx"
+access_key = "###YOUR_ACCESS_KEY###"
+access_secret = "###YOUR_ACCESS_SECRET###"
+requrl = "http://###YOUR_HOST###/v1/identify"
 
-requrl = "http://ap-southeast-1.api.acrcloud.com/v1/identify"
+
 http_method = "POST"
 http_uri = "/v1/identify"
 data_type = "audio"
