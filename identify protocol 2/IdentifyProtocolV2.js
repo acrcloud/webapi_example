@@ -56,9 +56,11 @@ function recogize(host, access_key, secret_key, query_data, query_type) {
     req.end();
 }
 
-var your_access_key = "your_access_key";
-var your_access_secret = "your_access_secret";
-var host = "ap-southeast-1.api.acrcloud.com";
+// Replace "###...###" below with your project's host, access_key, access_scret
+var host = "###YOUR_HOST###";
+var your_access_key = "###YOUR_ACCESS_KEY###";
+var your_access_secret = "###YOUR_ACCESS_SECRET###";
+
 var data_type = 'audio';
 var bitmap = fs.readFileSync('sample.wav');
 recogize(host, your_access_key, your_access_secret, new Buffer(bitmap), data_type);
