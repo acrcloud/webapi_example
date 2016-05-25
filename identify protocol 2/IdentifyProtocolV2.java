@@ -164,8 +164,8 @@
  		byte[] postDatas = new byte[bufferLen];
  		System.arraycopy(buffer, 0, postDatas, 0, bufferLen);
  		IdentifyProtocolV2 a = new IdentifyProtocolV2();
- 		// Replace "xxxxxxxx" below with your project's access_key and access_secret.
- 		String result = a.recognize("ap-southeast-1.api.acrcloud.com", "xxxxxxxx", "xxxxxxxx", postDatas, "audio", 80000);
+ 		// Replace "###...###" below with your project's host access_key and access_secret.
+ 		String result = a.recognize("###YOUR_HOST###", "###YOUR_ACCESS_KEY###", "###YOUR_ACCESS_SECRET###", postDatas, "audio", 80000);
  		System.out.println(result);
  	}
  
