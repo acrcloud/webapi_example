@@ -2,10 +2,10 @@ require 'openssl'
 require 'base64'
 require 'net/http/post/multipart'
 
-
+# Replace "###...###" below with your project's host, access_key and access_secret.
+requrl = "http://###YOUR_HOST###/v1/identify"
 access_key = "###YOUR_ACCESS_KEY###"
 access_secret = "###YOUR_ACCESS_SECRET###"
-requrl = "http://###YOUR_HOST###/v1/identify"
 
 http_method = "POST"
 http_uri = "/v1/identify"
