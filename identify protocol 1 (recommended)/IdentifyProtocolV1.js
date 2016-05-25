@@ -5,13 +5,13 @@ var crypto = require('crypto');
 var request = require('request');
 
 var defaultOptions = {
-  host: 'ap-southeast-1.api.acrcloud.com',
+  host: '###your_host###',
   endpoint: '/v1/identify',
   signature_version: '1',
   data_type:'audio',
   secure: true,
-  access_key: 'your_access_key',
-  access_secret: 'your_access_key'
+  access_key: '###your_access_key###',
+  access_secret: '###your_access_key###'
 };
 
 function buildStringToSign(method, uri, accessKey, dataType, signatureVersion, timestamp) {
