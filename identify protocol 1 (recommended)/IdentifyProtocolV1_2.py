@@ -44,7 +44,7 @@ def encode_multipart_formdata(fields, files):
     return content_type, body
 
 '''
-Replace "###...###" below with your project's access_key and access_secret.
+Replace "###...###" below with your project's host, access_key and access_secret.
 '''
 host = "###YOUR_HOST###"
 access_key = "###YOUR_ACCESS_KEY###"
