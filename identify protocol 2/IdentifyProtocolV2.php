@@ -1,14 +1,15 @@
 <?php
-$requrl = "http://ap-southeast-1.api.acrcloud.com/v1/identify";
+
 $http_method = "POST";
 $http_uri = "/v1/identify";
 $data_type = "audio";
 $signature_version = "1" ;
 $timestamp = time() ;
 
-// Replace "xxxxxxxx" below with your project's access_key and access_secret.
-$access_key =  'xxxxxxxx';
-$access_secret =  'xxxxxxxx';
+// Replace "###...###" below with your project's host, access_key and access_secret.
+$requrl = "http://###YOUR_HOST###/v1/identify";
+$access_key =  '###YOUR_ACCESS_KEY###';
+$access_secret =  '###YOUR_ACCESS_SECRET###';
 
 $string_to_sign = $http_method . "\n" . $http_uri ."\n" . $access_key . "\n" . 
                      $data_type . "\n" . $signature_version . "\n" . $timestamp;
