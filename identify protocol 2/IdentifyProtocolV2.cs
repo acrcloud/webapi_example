@@ -130,7 +130,7 @@ class IdentifyProtocolV2
               using (BinaryReader reader = new BinaryReader(fs))
               {
                   byte[] datas = reader.ReadBytes((int)fs.Length);
-                  // Replace "###...###" below with your project's access_key and access_secret.
+                  // Replace "###...###" below with your project's host, access_key and access_secret.
                   string result = IdentifyProtocolV2.recognize("###YOUR_HOST", "###YOU_ACCESS_KEY###", "###YOUR_ACCESS_SECRET###", datas, "audio");
                   Console.WriteLine(result);
               }
