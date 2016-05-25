@@ -8,7 +8,7 @@ $timestamp = time() ;
 
 
 // Replace "###...###" below with your project's host, access_key and access_secret.
-$requrl = "###YOUR_HOST###/v1/identify";
+$requrl = "http://###YOUR_HOST###/v1/identify";
 $access_key =  '###YOUR_ACCESS_KEY###';
 $access_secret =  '###YOUR_ACCESS_SECRET###';
 
