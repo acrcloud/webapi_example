@@ -130,8 +130,8 @@ class IdentifyProtocolV2
               using (BinaryReader reader = new BinaryReader(fs))
               {
                   byte[] datas = reader.ReadBytes((int)fs.Length);
-                  // Replace "xxxxxxxx" below with your project's access_key and access_secret.
-                  string result = IdentifyProtocolV2.recognize("ap-southeast-1.api.acrcloud.com", "xxxxxxxx", "xxxxxxxx", datas, "audio");
+                  // Replace "###...###" below with your project's access_key and access_secret.
+                  string result = IdentifyProtocolV2.recognize("###YOUR_HOST", "###YOU_ACCESS_KEY###", "###YOUR_ACCESS_SECRET###", datas, "audio");
                   Console.WriteLine(result);
               }
           }
