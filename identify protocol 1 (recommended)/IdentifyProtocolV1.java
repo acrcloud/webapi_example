@@ -183,7 +183,7 @@
  		System.arraycopy(buffer, 0, postDatas, 0, bufferLen);
  		IdentifyProtocolV1 a = new IdentifyProtocolV1();
  		
-   // Replace parameters below with your project's host, access_key and access_secret.
+   // Replace "###...###" below with your project's host, access_key and access_secret.
    // recognize(String host, String accessKey, String secretKey, byte[] queryData, String queryType, int timeout)
  		String result = a.recognize("###YOUR_HOST###", "###YOUR_KEY###", "###YOUR_SECRET###", postDatas, "audio", 10000);
  		System.out.println(result);
