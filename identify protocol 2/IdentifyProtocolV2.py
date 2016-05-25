@@ -7,9 +7,10 @@ import hmac
 import hashlib
 import time
 
-# Replace "xxxxxxxx" below with your project's access_key and access_secret.
-access_key = "xxxxxx"
-access_secret = "xxxxxx"
+# Replace "###...###" below with your project's host, access_key and access_secret.
+requrl = "http://###YOUR_HOST###/v1/identify"
+access_key = "###YOUR_ACCESS_KEY###"
+access_secret = "###YOUR_ACCESS_SECRET###"
 
 # suported file formats: mp3,wav,wma,amr,ogg, ape,acc,spx,m4a,mp4,FLAC, etc
 # File size: < 1M , You'de better cut large file to small file, within 15 seconds data size is better
@@ -37,7 +38,7 @@ test_data = {'access_key':access_key,
 
 test_data_urlencode = urllib.urlencode(test_data)
 
-requrl = "http://ap-southeast-1.api.acrcloud.com/v1/identify"
+
 
 req = urllib2.Request(url = requrl,data =test_data_urlencode)
 
