@@ -13,12 +13,12 @@ You can find account_access_key and account_access_secret in your account page.
 Log into http://console.acrcloud.com -> "Account" (top right corner) -> "RESTful API Keys" -> "Create Key Pair". 
 Be Careful, they are different with access_key and access_secret of your project.
 '''
-account_access_key = "xxxxxx"
-account_access_secret = "xxxxxx"
+account_access_key = "###YOUR_ACCESS_KEY###"
+account_access_secret = "###YOUR_ACCESS_SECRET###"
 
-requrl = "https://api.acrcloud.com/v1/monitor-streams/2104"
+requrl = "https://api.acrcloud.com/v1/monitor-streams/###STREM_ID###"
 http_method = "PUT"
-http_uri = "/v1/monitor-streams/2104"
+http_uri = "/v1/monitor-streams/###STREAM_ID###"
 signature_version = "1"
 timestamp = time.time()
 
