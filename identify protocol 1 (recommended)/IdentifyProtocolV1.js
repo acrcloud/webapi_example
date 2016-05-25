@@ -4,14 +4,15 @@ var crypto = require('crypto');
 //npm install request
 var request = require('request');
 
+// Replace "###...###" below with your project's host, access_key and access_secret.
 var defaultOptions = {
-  host: '###your_host###',
+  host: '###YOUR_HOST###',
   endpoint: '/v1/identify',
   signature_version: '1',
   data_type:'audio',
   secure: true,
-  access_key: '###your_access_key###',
-  access_secret: '###your_access_key###'
+  access_key: '###YOUR_ACCESS_KEY###',
+  access_secret: '###YOUR_ACCESS_SECRET###'
 };
 
 function buildStringToSign(method, uri, accessKey, dataType, signatureVersion, timestamp) {
