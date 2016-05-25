@@ -44,10 +44,11 @@ def encode_multipart_formdata(fields, files):
     return content_type, body
 
 '''
-Replace "xxxxxxxx" below with your project's access_key and access_secret.
+Replace "###...###" below with your project's access_key and access_secret.
 '''
-access_key = "xxxxxxxx"
-access_secret = "xxxxxxxx"
+host = "###YOUR_HOST###"
+access_key = "###YOUR_ACCESS_KEY###"
+access_secret = "###YOUR_ACCESS_SECRET###"
 
 # suported file formats: mp3,wav,wma,amr,ogg, ape,acc,spx,m4a,mp4,FLAC, etc
 # File size: < 1M , You'de better cut large file to small file, within 15 seconds data size is better
@@ -73,5 +74,5 @@ fields = {'access_key':access_key,
           'data_type':data_type,
           "signature_version":signature_version}
 
-res = post_multipart("ap-southeast-1.api.acrcloud.com", "/v1/identify", fields, {"sample":content})
+res = post_multipart(host, "/v1/identify", fields, {"sample":content})
 print res
