@@ -18,7 +18,7 @@ account_access_secret = "account access secret>"
 
 acr_id = sys.argv[1]
 
-requrl = "https://cn-api.acrcloud.com/v1/audios/"+acr_id+"?type=audio_id"
+requrl = "https://api.acrcloud.com/v1/audios/"+acr_id+"?type=audio_id"
 http_method = "DELETE"
 http_uri = "/v1/audios/"+acr_id
 signature_version = "1"
