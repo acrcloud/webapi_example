@@ -15,7 +15,7 @@ import time
 import requests  
 
 '''
-Replace "###...###" below with your project's access_key and access_secret.
+Replace "###...###" below with your project's host, access_key and access_secret.
 '''
 access_key = "###YOUR_ACCESS_KEY###"
 access_secret = "###YOUR_ACCESS_SECRET###"
