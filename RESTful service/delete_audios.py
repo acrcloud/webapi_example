@@ -14,7 +14,7 @@ Log into http://console.acrcloud.com -> "Account" (top right corner) -> "RESTful
 Be Careful, they are different with access_key and access_secret of your project.
 '''
 account_access_key = "<account access key>"
-account_access_secret = "account access secret>"
+account_access_secret = "<account access secret>"
 
 acr_id = sys.argv[1]
 
