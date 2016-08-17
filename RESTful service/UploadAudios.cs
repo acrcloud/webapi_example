@@ -214,8 +214,8 @@ namespace ACRCloudUploadFile
                     byte[] datas = reader.ReadBytes((int)fs.Length);
                     audioParams.Add("audio_data", datas);
 
-                    // It will skip 80 seconds from the beginning of datas.
-                    string result = ACRCloudUploadFile.Upload(audioParams, userParams, 30);
+                    // default timeout 10 seconds
+                    string result = ACRCloudUploadFile.Upload(audioParams, userParams, 10);
                     Console.WriteLine(result);
                     Console.ReadLine();
                 }
