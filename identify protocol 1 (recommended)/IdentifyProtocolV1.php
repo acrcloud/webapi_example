@@ -41,13 +41,16 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $requrl);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-$response = curl_exec($ch);
-if ($response == true) {
-    $info = curl_getinfo($ch);
-} else {
-    $errmsg = curl_error($ch);
-    print $errmsg;
-}
+$result = curl_exec($ch);
+echo $result;
+//$response = curl_exec($ch);
+//if ($response == true) {
+//    $info = curl_getinfo($ch);
+//} else {
+//    $errmsg = curl_error($ch);
+//    print $errmsg;
+//}
 curl_close($ch);
 ?>
