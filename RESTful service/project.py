@@ -88,7 +88,23 @@ def get_project(access_key):
     r.encoding = "utf-8"
     print r.text
 
+def list_projects():
+    http_method = "GET"
+    timestamp = time.time()
+    http_uri = "/v1/projects"
+
+    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
+    signature = sign(string_to_sign, option['access_secret'])
+    headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
+
+    requrl = "https://"+option['host'] + http_uri
+    r = requests.get(requrl, headers=headers, verify=True)
+    r.encoding = "utf-8"
+    print r.text
+
+
 if __name__ == "__main__":
     create_project('test_api_project', 'AVR', "test_api_bucket", 1, "")
     update_project('test_api_project', "ACRCloud Music")
     delete_project('test_api_project')
+    list_projects()
