@@ -20,23 +20,24 @@ def sign(string_to_sign, access_secret):
 		    hmac.new(access_secret, string_to_sign, digestmod=hashlib.sha1)
 		    .digest())
 
-def create_project(name, type, buckets, audio_type, external_id):
+def create_project(name, region, type, buckets, audio_type, external_id):
     http_method = "POST"
     timestamp = time.time()
     uri = '/v1/projects'
-
+    
     string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
 
     signature = sign(string_to_sign, option['access_secret'])
-
+ 
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
 
-    data = {'name':name, 'type':type, 'buckets':buckets, 'audio_type':audio_type, 'external_id':external_id}
-
+    data = {'name':name, 'region':region, 'type':type, 'buckets':buckets, 'audio_type':audio_type, 'external_id':external_id}
+    
     requrl = "https://"+option['host'] + uri
     r = requests.post(requrl, data=data, headers=headers, verify=True)
     r.encoding = "utf-8"
     print r.text
+
 
 def update_project(name, buckets):
     http_method = "PUT"
@@ -74,10 +75,10 @@ def delete_project(name):
     r.encoding = "utf-8"
     print r.text
 
-def get_project(access_key):
+def get_project(project_name):
     http_method = "GET"
     timestamp = time.time()
-    http_uri = "/v1/projects/"+access_key
+    http_uri = "/v1/projects/"+project_name
 
     string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
     signature = sign(string_to_sign, option['access_secret'])
@@ -104,7 +105,8 @@ def list_projects():
 
 
 if __name__ == "__main__":
-    create_project('test_api_project', 'AVR', "test_api_bucket", 1, "")
+    create_project('test_api_project', 'us-west-2', 'AVR', "test_api_bucket", 1, "")
+    get_project('test_api_project')
     update_project('test_api_project', "ACRCloud Music")
     delete_project('test_api_project')
     list_projects()
