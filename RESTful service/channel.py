@@ -43,7 +43,7 @@ def create_channel(bucket, channel_url, title, channel_id, custom_fields=None):
         values = []
         for k in custom_fields:
             keys.append(k)
-            values.append(custom_files[k])
+            values.append(custom_fields[k])
         data['custom_key[]'] = keys
         data['custom_value[]'] = values
 
