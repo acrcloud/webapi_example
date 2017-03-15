@@ -36,7 +36,6 @@ def create_channel(bucket, channel_url, title, channel_id, custom_fields=None):
     signature = sign(string_to_sign, option['access_secret'])
 
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
-    #if you uplaod fingerprint file , please set "data_type":"fingerprint"
     data = {'url':channel_url,'title':title, "channel_id":channel_id, "bucket_name":bucket}
     if custom_fields:
         keys = []
