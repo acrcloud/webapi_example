@@ -55,23 +55,23 @@ def delete_bucket(name):
     r = requests.delete(requrl, data=data, headers=headers, verify=True)
     r.encoding = "utf-8"
     print r.text
-def list_buckets():
+def list_buckets(per_page=50):
     http_method = "GET"
     timestamp = time.time()
     uri = '/v1/buckets'
-
+    
     string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
 
     signature = sign(string_to_sign, option['access_secret'])
-
+ 
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
 
-    requrl = "https://"+option['host'] + uri 
+    requrl = "https://"+option['host'] + uri+"?per_page="+str(per_page)
     r = requests.get(requrl, headers=headers, verify=True)
     r.encoding = "utf-8"
     print r.text
 
 if __name__ == "__main__":
     create_bucket('test_api_bucket', 'File', 100, "Music")
-    #list_buckets()
+    #list_buckets(50)
     #delete_bucket('test_api_bucket')
