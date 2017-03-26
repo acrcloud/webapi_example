@@ -16,8 +16,8 @@ Be Careful, they are different with access_key and access_secret of your project
 option = {
   'host': 'api.acrcloud.com',
   'signature_version': '1',
-  'access_key': 'console_access_key',
-  'access_secret': 'console_access_secret'
+  'access_key': 'your_account_access_key(not project key)',
+  'access_secret': 'your_account_access_secret'
 };
 
 
@@ -26,7 +26,7 @@ def sign(string_to_sign, access_secret):
 		    hmac.new(access_secret, string_to_sign, digestmod=hashlib.sha1)
 		    .digest())
 
-def create_channel_playback(bucket_id, channel_id, begin_time, end_time):
+def create_channel_playback(bucket_id, channel_id, time_length):
     http_method = "POST"
     timestamp = time.time()
     http_uri = "/v1/channel-playback"
@@ -36,14 +36,14 @@ def create_channel_playback(bucket_id, channel_id, begin_time, end_time):
     signature = sign(string_to_sign, option['access_secret'])
 
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
-    data = {"bucket_id":bucket_id, "channel_id":channel_id, "begin_time":int(begin_time), "end_time":int(end_time)}
+    data = {"bucket_id":bucket_id, "channel_id":channel_id, "time":int(time_length)}
 
     requrl = "https://"+option['host'] + http_uri
     r = requests.post(requrl, data=data, headers=headers, verify=True)
     r.encoding = "utf-8"
     print r.text
 
-def update_channel_playback(id, bucket_id, channel_id, begin_time, end_time):
+def update_channel_playback(id, bucket_id, channel_id, time_length):
     http_method = "PUT"
     timestamp = time.time()
     http_uri = "/v1/channel-playback/"+str(id)
@@ -53,7 +53,7 @@ def update_channel_playback(id, bucket_id, channel_id, begin_time, end_time):
     signature = sign(string_to_sign, option['access_secret'])
 
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
-    data = {"bucket_id":bucket_id, "channel_id":channel_id, "begin_time":int(begin_time), "end_time":int(end_time)}
+    data = {"bucket_id":bucket_id, "channel_id":channel_id, "time":int(time_length)}
 
     requrl = "https://"+option['host'] + http_uri
     r = requests.put(requrl, data=data, headers=headers, verify=True)
@@ -105,8 +105,8 @@ def delete_channel_playback(id):
 
 if __name__ == "__main__":
     timestamp = time.time()
-    #create_channel_playback(3833, 666, timestamp, timestamp+7*24*3600);
-    #update_channel_playback(1, 3833, 666, timestamp, timestamp+30*24*3600);
+    create_channel_playback(3833, 666, 7*24*3600)
+    #update_channel_playback(1, 3833, 666, 30*24*3600);
     #get_all_channel_playback(3833)
     #get_channel_playback(1)
     #delete_channel_playback(1)
