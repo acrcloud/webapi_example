@@ -6,6 +6,7 @@ import hashlib
 import urllib
 import time
 import requests
+import json
 
 option = {
   'host': 'api.acrcloud.com',
@@ -31,7 +32,7 @@ def create_offline(name, buckets, audio_type, region):
  
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
 
-    data = {'name':name, 'buckets':buckets, 'audio_type':audio_type, 'region':region}
+    data = {'name':name, 'buckets':json.dumps(buckets), 'audio_type':audio_type, 'region':region}
     
     requrl = "https://"+option['host'] + uri
     r = requests.post(requrl, data=data, headers=headers, verify=True)
@@ -87,7 +88,7 @@ def get_offline(name, path):
         f.close()
 
 if __name__ == "__main__":
-    #create_offline('test_api_offline_project', "offline-bucket", 1, "eu-west-1")
+    create_offline('test_api_offline_project', [{"name":"offline-bucket", "id":333}], 1, "eu-west-1")
     #rebuild_offline('test_api_offline_project')
     #delete_offline('test_api_offline_project')
     #get_offline("test_api_offline_project", "./acrcloud_local_db.zip")
