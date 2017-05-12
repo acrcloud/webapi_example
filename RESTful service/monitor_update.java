@@ -76,11 +76,11 @@ public class Update_monitor {
 				}
 			}
 
-            JSONObject jsonObject = JSONObject.fromObject(putParams);
-            jsonString = jsonObject.toString();
+                        JSONObject jsonObject = JSONObject.fromObject(putParams);
+                        jsonString = jsonObject.toString();
 
-            StringEntity params = new StringEntity(jsonString, "UTF-8");
-            params.setContentType("application/json");
+                        StringEntity params = new StringEntity(jsonString, "UTF-8");
+                        params.setContentType("application/json");
 
 			RequestConfig requestConfig = RequestConfig.custom()
 					.setConnectionRequestTimeout(timeout)
@@ -140,14 +140,14 @@ public class Update_monitor {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-        String streamID = "";
+                String streamID = "";
 		String streamUrl = "";
 		String streamName = "";
 		String region = "";
 		String realtime = "";
 		String record = "";
 		String accessKey = "";
-        String accessSecret = "";
+                String accessSecret = "";
 
 		Update_monitor ua = new Update_monitor();
 
