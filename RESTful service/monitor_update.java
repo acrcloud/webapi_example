@@ -77,7 +77,7 @@ public class Update_monitor {
 			}
 
                         JSONObject jsonObject = JSONObject.fromObject(putParams);
-                        jsonString = jsonObject.toString();
+                        String jsonString = jsonObject.toString();
 
                         StringEntity params = new StringEntity(jsonString, "UTF-8");
                         params.setContentType("application/json");
