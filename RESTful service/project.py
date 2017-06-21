@@ -18,15 +18,15 @@ option = {
 
 def sign(string_to_sign, access_secret):
     return  base64.b64encode(
-		    hmac.new(access_secret, string_to_sign, digestmod=hashlib.sha1)
+		    hmac.new(access_secret.encode(), string_to_sign.encode(), digestmod=hashlib.sha1)
 		    .digest())
 
 def create_project(name, region, type, buckets, audio_type, external_id):
     http_method = "POST"
-    timestamp = time.time()
+    timestamp = str(time.time())
     uri = '/v1/projects'
     
-    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
+    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], timestamp))
 
     signature = sign(string_to_sign, option['access_secret'])
  
@@ -42,10 +42,10 @@ def create_project(name, region, type, buckets, audio_type, external_id):
 
 def update_project(name, buckets):
     http_method = "PUT"
-    timestamp = time.time()
+    timestamp = str(time.time())
     uri = '/v1/projects/'+name
     
-    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
+    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], timestamp))
 
     signature = sign(string_to_sign, option['access_secret'])
  
@@ -60,10 +60,10 @@ def update_project(name, buckets):
 
 def delete_project(name):
     http_method = "DELETE"
-    timestamp = time.time()
+    timestamp = str(time.time())
     uri = '/v1/projects'+"/"+name
 
-    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
+    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], timestamp))
 
     signature = sign(string_to_sign, option['access_secret'])
 
@@ -78,10 +78,10 @@ def delete_project(name):
 
 def get_project(project_name):
     http_method = "GET"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/projects/"+project_name
 
-    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
+    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], timestamp))
     signature = sign(string_to_sign, option['access_secret'])
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
 
@@ -92,7 +92,7 @@ def get_project(project_name):
 
 def list_projects():
     http_method = "GET"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/projects"
 
     string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
