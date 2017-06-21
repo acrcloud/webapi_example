@@ -23,12 +23,12 @@ option = {
 
 def sign(string_to_sign, access_secret):
     return  base64.b64encode(
-		    hmac.new(access_secret, string_to_sign, digestmod=hashlib.sha1)
+		    hmac.new(access_secret.encode(), string_to_sign.encode(), digestmod=hashlib.sha1)
 		    .digest())
 
 def upload_audio(path, bucket, title, audio_id, data_type="audio", custom_fields=None):
     http_method = "POST"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/audios"
 
     string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
@@ -57,7 +57,7 @@ def upload_audio(path, bucket, title, audio_id, data_type="audio", custom_fields
 
 def get_audios(bucket, page=1):
     http_method = "GET"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/audios"
 
     string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
@@ -71,7 +71,7 @@ def get_audios(bucket, page=1):
 
 def update_audio(bucket, acr_id, title, audio_id, custom_fields=None):
     http_method = "PUT"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/audios/"+acr_id
 
     string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
@@ -95,7 +95,7 @@ def update_audio(bucket, acr_id, title, audio_id, custom_fields=None):
 
 def delete_audio(acr_id):
     http_method = "DELETE"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/audios/"+acr_id
 
     string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
