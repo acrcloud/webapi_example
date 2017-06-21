@@ -3,7 +3,6 @@ import os
 import base64
 import hmac
 import hashlib
-import urllib
 import time
 import requests
 
@@ -17,15 +16,15 @@ option = {
 
 def sign(string_to_sign, access_secret):
     return  base64.b64encode(
-		    hmac.new(access_secret, string_to_sign, digestmod=hashlib.sha1)
+		    hmac.new(access_secret.encode(), string_to_sign.encode(), digestmod=hashlib.sha1)
 		    .digest())
 	
 def create_bucket(name, type, scale, content_type):
     http_method = "POST"
-    timestamp = time.time()
+    timestamp = str(time.time())
     uri = '/v1/buckets'
     
-    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
+    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], timestamp))
 
     signature = sign(string_to_sign, option['access_secret'])
  
@@ -40,10 +39,10 @@ def create_bucket(name, type, scale, content_type):
 
 def delete_bucket(name):
     http_method = "DELETE"
-    timestamp = time.time()
+    timestamp = str(time.time())
     uri = '/v1/buckets'+"/"+name
     
-    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
+    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], timestamp))
 
     signature = sign(string_to_sign, option['access_secret'])
  
@@ -57,10 +56,10 @@ def delete_bucket(name):
     print r.text
 def list_buckets(per_page=50):
     http_method = "GET"
-    timestamp = time.time()
+    timestamp = str(time.time())
     uri = '/v1/buckets'
     
-    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
+    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], timestamp))
 
     signature = sign(string_to_sign, option['access_secret'])
  
