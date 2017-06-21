@@ -20,12 +20,12 @@ requrl = "https://api.acrcloud.com/v1/monitor-streams"
 http_method = "POST"
 http_uri = "/v1/monitor-streams"
 signature_version = "1"
-timestamp = time.time()
+timestamp = str(time.time())
 
 string_to_sign = http_method+"\n"+http_uri+"\n"+account_access_key+"\n"+signature_version+"\n"+str(timestamp)
 
 sign = base64.b64encode(
-        hmac.new(account_access_secret, string_to_sign, digestmod=hashlib.sha1)
+        hmac.new(account_access_secret.encode(), string_to_sign.encode(), digestmod=hashlib.sha1)
         .digest())
 
 headers = {'access-key': account_access_key, 'signature-version': signature_version, 'signature': sign, 'timestamp':timestamp}

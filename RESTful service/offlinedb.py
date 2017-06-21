@@ -18,12 +18,12 @@ option = {
 
 def sign(string_to_sign, access_secret):
     return  base64.b64encode(
-		    hmac.new(access_secret, string_to_sign, digestmod=hashlib.sha1)
+		    hmac.new(access_secret.encode(), string_to_sign.encode(), digestmod=hashlib.sha1)
 		    .digest())
 	
 def create_offline(name, buckets, audio_type, region):
     http_method = "POST"
-    timestamp = time.time()
+    timestamp = str(time.time())
     uri = '/v1/offlinedbs'
     
     string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
@@ -41,7 +41,7 @@ def create_offline(name, buckets, audio_type, region):
 
 def rebuild_offline(name):
     http_method = "PUT"
-    timestamp = time.time()
+    timestamp = str(time.time())
     uri = '/v1/offlinedbs/'+name
     
     string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
@@ -57,7 +57,7 @@ def rebuild_offline(name):
 
 def delete_offline(name):
     http_method = "DELETE"
-    timestamp = time.time()
+    timestamp = str(time.time())
     uri = '/v1/offlinedbs'+"/"+name
     
     string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
@@ -73,7 +73,7 @@ def delete_offline(name):
 
 def get_offline(name, path):
     http_method = "GET"
-    timestamp = time.time()
+    timestamp = str(time.time())
     uri = '/v1/offlinedbs'+"/"+name
 
     string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))

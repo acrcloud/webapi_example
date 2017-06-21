@@ -23,12 +23,12 @@ option = {
 
 def sign(string_to_sign, access_secret):
     return  base64.b64encode(
-		    hmac.new(access_secret, string_to_sign, digestmod=hashlib.sha1)
+		    hmac.new(access_secret.encode(), string_to_sign.encode(), digestmod=hashlib.sha1)
 		    .digest())
 
 def create_channel_playback(bucket_id, channel_id, time_length):
     http_method = "POST"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/channel-playback"
 
     string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
@@ -45,7 +45,7 @@ def create_channel_playback(bucket_id, channel_id, time_length):
 
 def update_channel_playback(id, bucket_id, channel_id, time_length):
     http_method = "PUT"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/channel-playback/"+str(id)
 
     string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
@@ -62,7 +62,7 @@ def update_channel_playback(id, bucket_id, channel_id, time_length):
 
 def get_all_channel_playback(bucket_id, page=1):
     http_method = "GET"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/buckets/"+str(bucket_id)+"/channel-playback"
 
     string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
@@ -76,7 +76,7 @@ def get_all_channel_playback(bucket_id, page=1):
 
 def get_channel_playback(id):
     http_method = "GET"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/channel-playback/"+str(id)
 
     string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
@@ -90,7 +90,7 @@ def get_channel_playback(id):
 
 def delete_channel_playback(id):
     http_method = "DELETE"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/channel-playback/"+str(id)
 
     string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
