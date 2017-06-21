@@ -3,7 +3,6 @@ import os
 import base64
 import hmac
 import hashlib
-import urllib
 import time
 import requests
 import json
