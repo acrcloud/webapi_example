@@ -23,15 +23,15 @@ option = {
 
 def sign(string_to_sign, access_secret):
     return  base64.b64encode(
-		    hmac.new(access_secret, string_to_sign, digestmod=hashlib.sha1)
+		    hmac.new(access_secret.encode(), string_to_sign.encode(), digestmod=hashlib.sha1)
 		    .digest())
 
 def create_channel(bucket, channel_url, title, channel_id, custom_fields=None):
     http_method = "POST"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/channels"
 
-    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
+    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], timestamp))
 
     signature = sign(string_to_sign, option['access_secret'])
 
@@ -53,10 +53,10 @@ def create_channel(bucket, channel_url, title, channel_id, custom_fields=None):
 
 def get_all_channels(bucket, page=1):
     http_method = "GET"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/buckets/"+bucket+"/channels"
 
-    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
+    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], timestamp))
     signature = sign(string_to_sign, option['access_secret'])
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
 
@@ -67,10 +67,10 @@ def get_all_channels(bucket, page=1):
 
 def get_channel(acr_id):
     http_method = "GET"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/channels/"+acr_id
 
-    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
+    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], timestamp))
     signature = sign(string_to_sign, option['access_secret'])
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
 
@@ -81,10 +81,10 @@ def get_channel(acr_id):
 
 def delete_channel(acr_id):
     http_method = "DELETE"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/channels/"+acr_id
 
-    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
+    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], timestamp))
     signature = sign(string_to_sign, option['access_secret'])
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
 
@@ -96,10 +96,10 @@ def delete_channel(acr_id):
 	
 def update_channel(acr_id, channel_url, title, channel_id, custom_fields=None):
     http_method = "PUT"
-    timestamp = time.time()
+    timestamp = str(time.time())
     http_uri = "/v1/channels/"+acr_id
 
-    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
+    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], timestamp))
 
     signature = sign(string_to_sign, option['access_secret'])
 
