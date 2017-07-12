@@ -121,7 +121,7 @@ def upload_audio(path, channel_id, data_type):
     requrl = "https://"+option['host'] + http_uri
     r = requests.post(requrl, files=files, data=data, headers=headers, verify=True)
     r.encoding = "utf-8"
-    print r.text
+    print r.status_code
 
 if __name__ == "__main__":
     timestamp = time.time()
