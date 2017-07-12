@@ -102,6 +102,26 @@ def delete_channel_playback(id):
     r.encoding = "utf-8"
     if r.status_code == 204:
         print "deleted"
+	
+def upload_audio(path, channel_id, data_type):
+    http_method = "POST"
+    timestamp = time.time()
+    http_uri = "/v1/channels/"+str(channel_id)+"/playback-audios"
+
+    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
+
+    signature = sign(string_to_sign, option['access_secret'])
+
+    f = open(path, "r")
+
+    files = {'audio_file':f}
+    headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
+    data = {"data_type":data_type}
+
+    requrl = "https://"+option['host'] + http_uri
+    r = requests.post(requrl, files=files, data=data, headers=headers, verify=True)
+    r.encoding = "utf-8"
+    print r.text
 
 if __name__ == "__main__":
     timestamp = time.time()
@@ -110,3 +130,4 @@ if __name__ == "__main__":
     #get_all_channel_playback(3833)
     #get_channel_playback(1)
     #delete_channel_playback(1)
+    upload_audio(sys.argv[1], 666, "fingerprint")
