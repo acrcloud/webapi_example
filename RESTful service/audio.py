@@ -35,7 +35,7 @@ def upload_audio(path, bucket, title, audio_id, data_type="audio", custom_fields
 
     signature = sign(string_to_sign, option['access_secret'])
 
-    f = open(path, "r")
+    f = open(path, "rb")
 
     files = {'audio_file':f}
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
@@ -46,7 +46,7 @@ def upload_audio(path, bucket, title, audio_id, data_type="audio", custom_fields
         values = []
         for k in custom_fields:
             keys.append(k)
-            values.append(custom_files[k])
+            values.append(custom_fields[k])
         data['custom_key[]'] = keys
         data['custom_value[]'] = values
 
