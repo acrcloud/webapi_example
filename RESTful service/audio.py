@@ -69,6 +69,33 @@ def get_audios(bucket, page=1):
     r.encoding = "utf-8"
     print r.text
 
+def update_audio_with_file(path, bucket, acr_id, title, audio_id, custom_fields=None):
+    http_method = "POST"
+    timestamp = time.time()
+    http_uri = "/v1/audios/"+acr_id
+
+    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
+    signature = sign(string_to_sign, option['access_secret'])
+    headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
+
+    data = {'title':title, "audio_id":audio_id, "bucket_name":bucket, "data_type":"fingerprint"}
+    if custom_fields:
+        keys = []
+        values = []
+        for k in custom_fields:
+            keys.append(k)
+            values.append(custom_fields[k])
+        data['custom_key[]'] = keys
+        data['custom_value[]'] = values
+
+    requrl = "https://"+option['host'] + http_uri
+
+    f = open(path, "r")
+    files = {'audio_file':f}
+    r = requests.post(requrl, files=files, data=data, headers=headers, verify=True)
+    r.encoding = "utf-8"
+    print r.text
+
 def update_audio(bucket, acr_id, title, audio_id, custom_fields=None):
     http_method = "PUT"
     timestamp = str(time.time())
