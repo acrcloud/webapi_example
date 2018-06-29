@@ -28,7 +28,7 @@ sign = base64.b64encode(
         hmac.new(account_access_secret, string_to_sign, digestmod=hashlib.sha1)
         .digest())
 
-headers = {'access-key': account_access_key, 'signature-version': signature_version, 'signature': sign, 'timestamp':timestamp}
+headers = {'access-key': account_access_key, 'signature-version': signature_version, 'signature': sign, 'timestamp':str(timestamp)}
 params = {'project_name':"monitor_test"}
 
 r = requests.get(requrl, params=params, headers=headers, verify=True)
