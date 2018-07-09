@@ -17,7 +17,7 @@ option = {
 
 def sign(string_to_sign, access_secret):
     return  base64.b64encode(
-		    hmac.new(access_secret.encode(), string_to_sign.encode(), digestmod=hashlib.sha1)
+		    hmac.new(str(access_secret), str(string_to_sign), digestmod=hashlib.sha1)
 		    .digest())
 
 def create_project(name, region, type, buckets, audio_type, external_id):
@@ -103,6 +103,21 @@ def list_projects():
     r.encoding = "utf-8"
     print r.text
 
+#return {"id":0, "name":"", "access_key":"", "access_secret":"", "access_secret_old":""}
+def update_secret(project_name):
+    http_method = "PUT"
+    timestamp = str(time.time())
+    http_uri = "/v1/projects/"+str(project_name)+"/update_secret"
+
+    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], timestamp))
+    signature = sign(string_to_sign, option['access_secret'])
+    headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
+
+    requrl = "https://"+option['host'] + http_uri
+
+    r = requests.put(requrl, headers=headers, verify=True)
+    r.encoding = "utf-8"
+    print r.text
 
 if __name__ == "__main__":
     create_project('test_api_project', 'us-west-2', 'AVR', [{"name":"ACRCloud Music"}, {"name":"usbucket"}], 1, "")
