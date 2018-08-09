@@ -24,7 +24,8 @@ requrl = "http://###YOUR_HOST###/v1/identify"
 
 http_method = "POST"
 http_uri = "/v1/identify"
-data_type = "audio"
+#default is "fingerprint", it's for recognizing fingerprint, if you want to identify audio, please change data_type="audio"
+data_type = "fingerprint"
 signature_version = "1"
 timestamp = time.time()
 
