@@ -37,7 +37,7 @@ def upload_audio(path, bucket, title, audio_id, data_type="audio", custom_fields
 
     f = open(path, "rb")
 
-    files = {'audio_file':f}
+    files = {'audio_file':("audio_file", f)}
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
     #if you uplaod fingerprint file , please set "data_type":"fingerprint"
     data = {'title':title, "audio_id":audio_id, "bucket_name":bucket, "data_type":data_type}
