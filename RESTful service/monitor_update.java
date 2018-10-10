@@ -111,7 +111,7 @@ public class Update_monitor {
         String reqUrl = "https://api.acrcloud.com/v1/monitor-streams/"+streamID;
         String htttMethod = "PUT";
         String httpAction = "/v1/monitor-streams/"+streamID;
-        String signature_version = "1";
+        String signatureVersion = "1";
         String timestamp = this.getUTCTimeSeconds();
 
  		String sigStr = htttMethod + "\n" + httpAction + "\n" + accessKey
