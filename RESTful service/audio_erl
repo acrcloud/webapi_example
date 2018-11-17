@@ -27,7 +27,7 @@ main(_) ->
 	Audio_title = "xxx",
 	Audio_id = "xxx",
 	Data_type = "xxx",%%audio or fingerprint
-	Custom_fields = [],
+	Custom_fields = [{fname,"fname"},{lname,"lname"}],%%first value of tuple should be atom,second value should be string
 	upload_audio(Acr_Host,Acr_Secret_key,Acr_key,Api_version,Path_file,Bucket_name,Audio_title,Audio_id,Data_type,Custom_fields).
 
 
@@ -37,7 +37,7 @@ main(_) ->
 start_apps()->
 	{ok,_} = application:ensure_all_started(inets),
 	{ok,_} = application:ensure_all_started(ssl),
-	%%httpc:set_options([{proxy, {{"localhost", 8084},["abc.com"]}}]),
+	httpc:set_options([{proxy, {{"localhost", 8084},["abc.com"]}}]),
 	ok.
 
 	
@@ -64,18 +64,31 @@ upload_audio(URl_host,Access_secret,Access_key,Sig_version,Path_file,Bucket_name
 	Signature = create_signature(Http_method,Http_uri,Access_key,Access_secret,Sig_version,Timestamp),
 	{ok, Audio_binary} = file:read_file(Path_file),	
 	Requrl = lists:append(["https://",URl_host,Http_uri]),
-	Boundary = "--------------AaB03x",
+	Boundary = "AaB03xXcvfbghy65",
 	Data = [{audio_id,Audio_id}, {title, Title},{bucket_name,Bucket_name},{data_type,Data_type}],
-	Data_send = lists:append(Custom_fields,Data),
+	[Key_accum_final,Value_accum_final] = create_custom_fields(Custom_fields),
+	Data_send = lists:append([Data,Key_accum_final,Value_accum_final]),
 	Body = format_multipart_formdata(Boundary,Data_send,[{audio_file, "audio_file", Audio_binary}]),
 	ContentType = lists:concat(["multipart/form-data; boundary=", Boundary]),
 	Headers=[
-				{"content-length", integer_to_list(size(Body))},{"access-key",Access_key},
-				{"signature-version",Sig_version},{"signature",Signature},{"timestamp",Timestamp}
+				{"Content-length", integer_to_list(size(Body))},{"access-key",Access_key},
+				{"signature-version",Sig_version},{"signature",Signature},{"timestamp",Timestamp},{"Accept","*/*"}
 			],
 
 	Result = httpc:request(post, {Requrl, Headers,ContentType, Body}, [],  [{sync,true}]),
 	result_to_terms(Result).
+
+
+%%for creating custom fields
+create_custom_fields(Custom_fields)->
+	[Key_accum_final,Value_accum_final] = 
+	lists:foldl(
+		fun({Key,Value},[Key_accum,Value_acccum])->  
+			 New_Key_Accum = [{'custom_key[]',atom_to_list(Key)}|Key_accum],
+			 New_Value_Accum = [{'custom_value[]',Value}|Value_acccum],
+			[New_Key_Accum,New_Value_Accum]
+		end,
+	[[],[]],Custom_fields).
 
 
 %%for formatting form-data
@@ -83,7 +96,7 @@ format_multipart_formdata(Boundary, Fields, Files) ->
 	FieldParts = 
 	lists:map(
 		fun({FieldName, FieldContent}) ->
-		   [lists:concat(["", Boundary]),
+		   [lists:concat(["--", Boundary]),
 			lists:concat(["Content-Disposition: form-data; name=\"",atom_to_list(FieldName),"\""]),
 			"",
 			FieldContent]
@@ -92,17 +105,16 @@ format_multipart_formdata(Boundary, Fields, Files) ->
 	FileParts = 
 	lists:map(
 		fun({FieldName, FileName, FileContent}) ->
-			[lists:concat(["", Boundary]),
+			[lists:concat(["--", Boundary]),
 			lists:concat(["Content-Disposition: form-data; name=\"",atom_to_list(FieldName),"\"; filename=\"",FileName,"\""]),
-			lists:concat(["Content-Type: ", "application/octet-stream"]),
 			"",
 			FileContent]
 		end, Files),
 	FileParts2 = lists:append(FileParts),
-	EndingParts = [lists:concat(["", Boundary,"--"])],
+	EndingParts = [lists:concat(["--", Boundary,"--"])],
 	Parts = lists:append([FieldParts2,FileParts2,EndingParts]),
-	Fold_part = lists:foldl(fun(X,Accum)-> [X,"\r\n"|Accum] end,[],Parts),
-	erlang:list_to_binary(lists:reverse(Fold_part)).
+	Fold_part = lists:foldr(fun(X,Accum)-> [X,"\r\n"|Accum] end,[],Parts),
+	erlang:list_to_binary(Fold_part).
 
 
 %%for parsing request response and getting response code
