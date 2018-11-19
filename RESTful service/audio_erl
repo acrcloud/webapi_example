@@ -58,7 +58,7 @@ create_signature(Http_method,Http_uri,Access_key,Access_secret,Sig_version,Times
 
 %%%for uploading audio
 upload_audio(URl_host,Access_secret,Access_key,Sig_version,Path_file,Bucket_name,Title,Audio_id,Data_type,Custom_fields)->
-	Http_method = "post",
+	Http_method = "POST",
 	Http_uri = "/v1/audios",
 	Timestamp = erlang:integer_to_list(calendar:datetime_to_gregorian_seconds(calendar:universal_time())-62167219200),
 	Signature = create_signature(Http_method,Http_uri,Access_key,Access_secret,Sig_version,Timestamp),
