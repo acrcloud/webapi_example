@@ -1,7 +1,7 @@
 <?php
-    $project_name = "ppm";
-    $account_access_key = 'dcf338fbdea64092';
-    $account_access_secret = '7409b39c2cc003d2fcbdc1859d003fa1';
+    $project_name = "your_project_name";
+    $account_access_key = 'your_console_key';
+    $account_access_secret = 'your_console_secret';
     $request_url = 'https://api.acrcloud.com/v1/monitor-streams?project_name='.$project_name;
     $http_method = 'GET';
     $http_uri = "/v1/monitor-streams";
