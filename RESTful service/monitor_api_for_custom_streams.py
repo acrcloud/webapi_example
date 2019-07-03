@@ -64,6 +64,7 @@ class Acrcloud_Monitor_API_for_custom_streams:
             "stream_name": stream_name,
             "region": region,
             "url": url,
+            "realtime": 0
         }
         r = requests.post(requrl, data=data, headers=headers, verify=True)
         r.encoding = "utf-8"
