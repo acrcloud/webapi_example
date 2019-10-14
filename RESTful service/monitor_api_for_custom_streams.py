@@ -36,7 +36,7 @@ class Acrcloud_Monitor_API_for_custom_streams:
             "access-key": self.account_access_key,
             "signature-version": signature_version,
             "signature": sign,
-            "timestamp": timestamp
+            "timestamp": str(timestamp)
         }
         return headers
 
