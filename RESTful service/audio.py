@@ -135,8 +135,25 @@ def delete_audio(acr_id):
     if r.status_code == 204:
         print "deleted"
 
+def move_audio(acr_id, new_bucket_name):
+    http_method = "PUT"
+    timestamp = str(time.time())
+    http_uri = "/v1/audios/"+acr_id
+
+    string_to_sign = '\n'.join((http_method, http_uri, option['access_key'], option['signature_version'], str(timestamp)))
+    signature = sign(string_to_sign, option['access_secret'])
+    headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
+
+    data = {'action':'move', 'new_bucket':new_bucket_name}
+    requrl = "https://"+option['host'] + http_uri
+
+    r = requests.put(requrl, data=data, headers=headers, verify=True)
+    r.encoding = "utf-8"
+    print r.text
+
 if __name__ == "__main__":
     #update_audio('eu-test', 'db397154fb9858f17373b5bf66be875a', 'Hiding my heart - Adele', '12345', {"artist":"Adele", "title":"Hiding my heart"})
     #delete_audio("07221fadacc359fdb0744cd28b7b0ce9")
     #get_audios('eu-test', 1)
     upload_audio(sys.argv[1], 'eu-test', 'test-title', '1212', 'fingerprint')
+    #move_audio('db397154fb9858f17373b5bf66be875a', 'new_bucket_name')
