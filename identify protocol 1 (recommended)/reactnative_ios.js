@@ -133,6 +133,7 @@ async function identify(uri, options) {
   );
   let result = await response.text();
   console.log(result);
+  return result;
 }
 const styles = StyleSheet.create({
   container: {
