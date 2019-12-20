@@ -93,9 +93,27 @@ def get_offline(name, path):
         f.write(r.content)
         f.close()
 
+def rebuild_offline_with_files(name, file_list):
+    http_method = "PUT"
+    timestamp = str(time.time())
+    uri = '/v1/offlinedbs/'+name
+
+    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], timestamp))
+
+    signature = sign(string_to_sign, option['access_secret'])
+
+    headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
+
+    requrl = "https://"+option['host'] + uri
+    data = {'files':file_list}
+    r = requests.put(requrl, headers=headers, json=data, verify=True)
+    r.encoding = "utf-8"
+    print r.text
+
 if __name__ == "__main__":
     create_offline('test_api_offline_project', [{"name":"offline-bucket", "id":333}], 1, "eu-west-1")
     #rebuild_offline('test_api_offline_project')
     #rebuild_offline('test_api_offline_project', [{"name":"offline-bucket", "id":333}])
     #delete_offline('test_api_offline_project')
     #get_offline("test_api_offline_project", "./acrcloud_local_db.zip")
+    #rebuild_offline_with_files("test_api_offline_project", ["c738810677f746de3d3800f7f95b9f64"])
