@@ -17,7 +17,7 @@ account_access_key = "account_access_key"
 account_access_secret = "account_secret_key"
 
 #replace "your_project_key" with your monitor project key
-requrl = "https://ap-api.acrcloud.com/v1/monitors/your_project_key/callback"
+requrl = "https://api.acrcloud.com/v1/monitors/your_project_key/callback"
 http_method = "POST"
 http_uri = "/v1/monitors/your_project_key/callback"
 signature_version = "1" 
