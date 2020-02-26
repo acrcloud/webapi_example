@@ -55,7 +55,7 @@ def upload_audio(path, bucket, title, audio_id, data_type="audio", custom_fields
     r.encoding = "utf-8"
     print r.text
 
-def get_audios(bucket, page=1):
+def get_audios(bucket, page=1,search=''):
     http_method = "GET"
     timestamp = str(time.time())
     http_uri = "/v1/audios"
@@ -65,6 +65,8 @@ def get_audios(bucket, page=1):
     headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':timestamp}
 
     requrl = "https://"+option['host'] + http_uri+"?bucket_name="+bucket+"&page="+str(page)
+    if search:
+        requrl = requrl+'&search='+search
     r = requests.get(requrl, headers=headers, verify=True)
     r.encoding = "utf-8"
     print r.text
