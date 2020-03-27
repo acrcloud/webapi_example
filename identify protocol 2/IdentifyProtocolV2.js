@@ -63,4 +63,4 @@ var your_access_secret = "###YOUR_ACCESS_SECRET###";
 
 var data_type = 'audio';
 var bitmap = fs.readFileSync('sample.wav');
-recogize(host, your_access_key, your_access_secret, new Buffer(bitmap), data_type);
+recogize(host, your_access_key, your_access_secret, Buffer.from(bitmap), data_type);
