@@ -171,8 +171,8 @@ class Custom_Monitor_Demo:
         else:
             print "update info is None, ", stream_id
 
-    def set_callback(self, callback_url, post_type):
-        print "set callback: ", callback_url, self.api.set_callback(self.project_access_key, callback_url, post_type)
+    def set_callback(self, callback_url, post_type, send_noresult=0):
+        print "set callback: ", callback_url, self.api.set_callback(self.project_access_key, callback_url, post_type, send_noresult)
 
 
 if __name__ == "__main__":
