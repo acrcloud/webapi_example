@@ -112,7 +112,7 @@ class Acrcloud_Monitor_API_for_custom_streams:
         r.encoding = "utf-8"
         return r.text
 
-    def set_callback(self, project_access_key, callback_url, post_type="json"):
+    def set_callback(self, project_access_key, callback_url, post_type="json", send_noresult=0):
         requrl = "https://ap-api.acrcloud.com/v1/monitors/{0}/callback".format(project_access_key)
         http_uri = requrl[requrl.find("/v1/"):]
         http_method = "POST"
@@ -120,8 +120,9 @@ class Acrcloud_Monitor_API_for_custom_streams:
 
         headers = self.create_headers(http_uri, http_method, signature_version)
         data = {
-            "callback_url":callback_url,
-            "post_type":post_type, #json or form
+            "callback_url": callback_url,
+            "post_type": post_type, #json or form
+            "send_noresult": send_noresult,
         }
 
         r = requests.post(requrl, data=data, headers=headers, verify=True)

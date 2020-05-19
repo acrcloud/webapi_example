@@ -23,7 +23,8 @@
 
     $postfields = array(
         'callback_url' => 'http://www.your_url.com',
-        'post_type' =>'json'
+        'post_type' =>'json',
+        'send_noresult' => 0
     );
     $headerArray = array();
     $headers = array(
