@@ -69,13 +69,13 @@ function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 const defaultOptions = {
-  host: 'identify-cn-north-1.acrcloud.com',
+  host: '<Project Host>',
   endpoint: '/v1/identify',
   signature_version: '1',
   data_type: 'audio',
   secure: true,
-  access_key: 'ffa04326e7218a2cc0f95828e09de997',
-  access_secret: 'Wx4oZ4810hcz1jofHb4xMfScGmyvjNkqezn7bBE0',
+  access_key: '<Project AccessKey>',
+  access_secret: '<Project SecretKey>',
 };
 function buildStringToSign(
   method,

@@ -1,5 +1,5 @@
 <?php
-    $request_url = "https://ap-api.acrcloud.com/v1/monitors/your_project_key/callback";
+    $request_url = "https://api.acrcloud.com/v1/monitors/your_project_key/callback";
     $http_method = 'POST';
     $http_uri = '/v1/monitors/your_project_key/callback';
     $timestamp = time();

@@ -21,7 +21,7 @@ function buildStringToSign(method, uri, accessKey, dataType, signatureVersion, t
 
 function sign(signString, accessSecret) {
   return crypto.createHmac('sha1', accessSecret)
-    .update(new Buffer(signString, 'utf-8'))
+    .update(Buffer.from(signString, 'utf-8'))
     .digest().toString('base64');
 }
 
@@ -60,7 +60,7 @@ function identify(data, options, cb) {
 
 var bitmap = fs.readFileSync('sample.wav');
 
-identify(new Buffer(bitmap), defaultOptions, function (err, httpResponse, body) {
+identify(Buffer.from(bitmap), defaultOptions, function (err, httpResponse, body) {
   if (err) console.log(err);
   console.log(body);
 });
