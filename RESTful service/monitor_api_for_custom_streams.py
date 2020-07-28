@@ -129,6 +129,25 @@ class Acrcloud_Monitor_API_for_custom_streams:
         r.encoding = "utf-8"
         return r.text
 
+    def get_recording(self, project_access_key, stream_id, record_timestamp, played_duration):
+        requrl = "https://api.acrcloud.com/v1/monitor-streams/{0}/record".format(stream_id)
+        http_uri = requrl[requrl.find("/v1/"):]
+        http_method = "GET"
+        signature_version = "1"
+
+        headers = self.create_headers(http_uri, http_method, signature_version)
+        params = {"access_key":project_access_key, "record_time":record_timestamp, "record_duration":played_duration}
+        r = requests.get(requrl, params=params, headers=headers, verify=True)
+        try:
+            d = r.headers['content-disposition']
+            fname = d[ (d.find('filename="') + len('filename="')) : d.find('";') ]
+            fname = fname.replace(":", "_")
+        except Exception as e:
+            #print ("Error@get_recording: {0}".format(str(e)))
+            traceback.print_exc()
+            fname = "acrcloud_{0}_{1}_{2}.failed".format(stream_id, record_timestamp, played_duration)
+        return fname, r.content
+
 
 class Custom_Monitor_Demo:
 
@@ -174,6 +193,12 @@ class Custom_Monitor_Demo:
     def set_callback(self, callback_url, post_type, send_noresult=0):
         print "set callback: ", callback_url, self.api.set_callback(self.project_access_key, callback_url, post_type, send_noresult)
 
+    def get_recording(self, stream_id, record_timestamp, played_duration):
+        fname, fcontent = self.api.get_recording(self.project_access_key, stream_id, record_timestamp, played_duration)
+        with open(fname, "wb") as wfile:
+            wfile.write(fcontent)
+        return fname
+
 
 if __name__ == "__main__":
     config = {
@@ -193,3 +218,8 @@ if __name__ == "__main__":
 
     #callback_url = "www.xxxx.com"
     #ams.set_callback(callback_url, "form")
+
+    #stream_id = "<<< your stream_id >>>"
+    #record_timestamp = "<<< YYYYmmddHHMMSS >>>" #for example: 20200601101215
+    #played_duration = 30 # seconds
+    #ams.get_recording(stream_id, record_timestamp, played_duration)
