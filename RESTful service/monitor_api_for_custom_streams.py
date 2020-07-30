@@ -52,7 +52,7 @@ class Acrcloud_Monitor_API_for_custom_streams:
         r.encoding = "utf-8"
         return r.text
 
-    def add_channel(self, project_name, stream_name, region, url):
+    def add_channel(self, project_name, stream_name, region, config_name, url):
         requrl = "https://api.acrcloud.com/v1/monitor-streams"
         http_uri = requrl[requrl.find("/v1/"):]
         http_method = "POST"
@@ -63,8 +63,8 @@ class Acrcloud_Monitor_API_for_custom_streams:
             "project_name" : project_name,
             "stream_name": stream_name,
             "region": region,
-            "url": url,
-            "realtime": 0
+            "stream_config": config_name,
+            "url": url
         }
         r = requests.post(requrl, data=data, headers=headers, verify=True)
         r.encoding = "utf-8"
@@ -175,8 +175,8 @@ class Custom_Monitor_Demo:
             traceback.print_exc()
         return stream_list
 
-    def add_monitor(self, stream_name, region, url):
-        print "Add stream: {0}, {1}, {2}".format(stream_name, region, self.api.add_channel(self.project_name, stream_name, region, url))
+    def add_monitor(self, stream_name, region, config_name, url):
+        print "Add stream: {0}, {1}, {2}, {3}".format(stream_name, region, config_name, self.api.add_channel(self.project_name, stream_name, region, config_name, url))
 
     def del_monitor(self, stream_id):
         print "Delete stream: {0}, {1}".format(stream_id, self.api.delete_channel(stream_id))
@@ -210,7 +210,7 @@ if __name__ == "__main__":
 
     ams = Custom_Monitor_Demo(config)
     print ams.all_project_channels()
-    #print ams.add_monitor("api_add", "ap-northeast-1", "http://xxxx")
+    #print ams.add_monitor("stream_id", "ap-northeast-1", "non-realtime", "http://xxxx")
 
     #stream_id="XXXX"
     #ams.pause_restart_monitor(stream_id, "restart") #pause  or restart
