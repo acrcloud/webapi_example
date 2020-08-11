@@ -58,9 +58,51 @@ function identify(data, options, cb) {
   }, cb);
 }
 
+function identify_v2(data, options, cb) {
+    //npm install form-data
+    var FormData = require('form-data');
+    //npm install node-fetch
+    var fetch = require('node-fetch');
+
+    var current_data = new Date();
+    var timestamp = current_data.getTime()/1000;
+    
+    var stringToSign = buildStringToSign('POST',
+        options.endpoint,
+        options.access_key,
+        options.data_type,
+        options.signature_version,
+        timestamp);
+    
+    var signature = sign(stringToSign, options.access_secret);
+    
+    var form = new FormData();
+    form.append('sample', data);
+    form.append('sample_bytes', data.length);
+    form.append('access_key', options.access_key);
+    form.append('data_type', options.data_type);
+    form.append('signature_version', options.signature_version);
+    form.append('signature', signature);
+    form.append('timestamp', timestamp);
+ 
+    fetch("http://"+options.host + options.endpoint, 
+        {method: 'POST', body: form })
+        .then((res) => {return res.text()})
+        .then((res) => {cb(res, null)})
+        .catch((err) => {cb(null, err)});
+}
+
 var bitmap = fs.readFileSync('sample.wav');
 
 identify(Buffer.from(bitmap), defaultOptions, function (err, httpResponse, body) {
   if (err) console.log(err);
   console.log(body);
 });
+
+//identify_v2(Buffer.from(bitmap), defaultOptions, function (res, err) {
+//    if (!err) {
+//        console.log(res);
+//    } else {
+//        console.log(err);
+//    }
+//}); 
