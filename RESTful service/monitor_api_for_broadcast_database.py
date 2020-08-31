@@ -155,7 +155,7 @@ class Acrcloud_Monitor_API:
         r.encoding = "utf-8"
         return r.text
 
-    def get_recording(self, access_key, channel_id, record_timestamp, played_duration):
+    def download_rec_recording(self, access_key, channel_id, record_timestamp, played_duration):
         "GET,HEAD <module>/acrcloud-monitor-streams/recording/"
         requrl = "https://api.acrcloud.com/v1/acrcloud-monitor-streams/recording/{0}/{1}".format(access_key, channel_id)
         http_uri = requrl[requrl.find("/v1/"):]
@@ -170,11 +170,40 @@ class Acrcloud_Monitor_API:
             fname = d[ (d.find('filename="') + len('filename="')) : d.find('";') ]
             fname = fname.replace(":", "_")
         except Exception as e:
-            #print ("Error@get_recording: {0}".format(str(e)))
             fname = "acrcloud_{0}_{1}_{2}.failed".format(channel_id, record_timestamp, played_duration)
         return fname, r.content
 
+    def get_day_recording_list(self, project_access_key, channel_id, date):
+        "GET,HEAD <module>/acrcloud-monitor-streams/recording_list/"
+        requrl = "https://api.acrcloud.com/v1/acrcloud-monitor-streams/recording_list/{0}/{1}".format(project_access_key, channel_id)
+        http_uri = requrl[requrl.find("/v1/"):]
+        http_method = "GET"
+        signature_version = "1"
 
+        headers = self.create_headers(http_uri, http_method, signature_version)
+        params = {"date":date}
+        r = requests.get(requrl, params=params, headers=headers, verify=True)
+        r.encoding = "utf-8"
+        return r.text
+
+    def download_hour_recording(self, project_access_key, channel_id, timestamp, duration, file_type):
+        "GET,HEAD <module>/acrcloud-monitor-streams/recording_download/"
+        requrl = "https://api.acrcloud.com/v1/acrcloud-monitor-streams/recording_download/{0}/{1}".format(project_access_key, channel_id)
+        http_uri = requrl[requrl.find("/v1/"):]
+        http_method = "GET"
+        signature_version = "1"
+
+        headers = self.create_headers(http_uri, http_method, signature_version)
+        params = {"timestamp":timestamp, "duration": duration, "type": file_type}
+        r = requests.get(requrl, params=params, headers=headers, verify=True)
+        try:
+            d = r.headers['content-disposition']
+            fname = d[ (d.find('filename="') + len('filename="')) : d.find('";') ]
+            fname = fname.replace(":", "_")
+        except Exception as e:
+            timestamp_f = datetime.datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S').strftime('%Y%m%d%H%M%S')
+            fname = "acrcloud_{0}_{1}_{2}.failed".format(channel_id, timestamp_f, duration)
+        return fname, r.content
 
 class Acrcloud_Monitor_Demo:
 
@@ -254,8 +283,17 @@ class Acrcloud_Monitor_Demo:
         ret = self.api.del_channel_urls(channel_id, del_urls)
         return ret
 
-    def get_recording(self, access_key, channel_id, record_timestamp, played_duration):
-        fname, content = self.api.get_recording(access_key, channel_id, record_timestamp, played_duration)
+    def download_rec_recording(self, access_key, channel_id, record_timestamp, played_duration):
+        fname, content = self.api.download_rec_recording(access_key, channel_id, record_timestamp, played_duration)
+        return fname, content
+
+    def get_day_recording_list(self, access_key, channel_id, date):
+        ret = self.api.get_day_recording_list(access_key, channel_id, date)
+        recording_list = json.loads(ret)
+        return recording_list
+
+    def download_hour_recording(self, access_key, channel_id, timestamp, duration, file_type):
+        fname, content = self.api.download_hour_recording(access_key, channel_id, timestamp, duration, file_type)
         return fname, content
 
 if __name__ == "__main__":
@@ -266,18 +304,24 @@ if __name__ == "__main__":
 
     ams = Acrcloud_Monitor_Demo(config)
 
+    """
     #Get all the projects
     project_list = ams.projects()
+    """
 
+    """
     #Set State Callback_URL
     #post_data_type: "json" or "form"
     ams.set_state_callback("<project_name>", "<state_callback_url>", "json")
+    """
 
+    """
     #Set Result Callback_URL
     #send_noresult: True or False
     #post_data_type: "json" or "form"
     #result_type: "realtime" or "delay"
-    ams.print ams.set_result_callback("<project_name>", "<result_callback_url>", False, "form", "realtime")
+    print ams.set_result_callback("<project_name>", "<result_callback_url>", False, "form", "realtime")
+    """
 
     """
     project_name = "<your project name>"
@@ -285,7 +329,9 @@ if __name__ == "__main__":
 
     channel_id = "<acrcloud db channel id>"
     print ams.channel_info(channel_id)
+    """
 
+    """
     channel_id = "XXXXX"
     print ams.get_channel_urls(channel_id)
     add_url_list = ["url1"]
@@ -293,14 +339,33 @@ if __name__ == "__main__":
     print ams.get_channel_urls(channel_id)
     del_url_list = ["url1"]
     print ams.del_channel_urls(channel_id, del_url_list)
+    """
 
+    """
+    # download rec recording
     access_key = "<your project access_key>"
-    channel_id = "channel_id"
+    channel_id = "<channel_id>"
     record_timestamp = "20191203131312"
     played_duration = 100
-    fname, fcontent = ams.get_recording(access_key, channel_id, record_timestamp, played_duration)
+    fname, fcontent = ams.download_rec_recording(access_key, channel_id, record_timestamp, played_duration)
     if not fname.endswith("failed"):
         with open(fname, "wb") as wfile:
             wfile.write(fcontent)
+    """
 
+    """
+    # download hour recording
+    access_key = "<your project access_key>"
+    channel_id = "<channel_id>"
+    date = "<YYYYMMDD>"
+    jinfo = ams.get_day_recording_list(access_key, channel_id, date)
+    for item in jinfo["data"]:
+        print item
+        timestamp = item["timestamp"]
+        duration = item["duration"]
+        file_type = item["type"]
+        fname, fcontent = ams.download_hour_recording(access_key, channel_id, timestamp, duration, file_type)
+        print fname
+        with open(fname, "wb") as wfile:
+            wfile.write(fcontent)
     """
