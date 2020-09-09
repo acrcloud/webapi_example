@@ -69,8 +69,25 @@ def list_buckets(per_page=50):
     r = requests.get(requrl, headers=headers, verify=True)
     r.encoding = "utf-8"
     print r.text
+	
+def get_bucket(id):
+    http_method = "GET"
+    timestamp = time.time()
+    uri = '/v1/buckets/'+str(id)
 
+    string_to_sign = '\n'.join((http_method, uri, option['access_key'], option['signature_version'], str(timestamp)))
+
+    signature = sign(string_to_sign, option['access_secret'])
+
+    headers = {'access-key': option['access_key'], 'signature-version': option['signature_version'], 'signature': signature, 'timestamp':str(timestamp)}
+
+    requrl = "https://"+option['host'] + uri
+    r = requests.get(requrl, headers=headers, verify=True)
+    r.encoding = "utf-8"
+    print r.text
+	
 if __name__ == "__main__":
     create_bucket('test_api_bucket', 'File', 100, "Music")
     #list_buckets(50)
     #delete_bucket('test_api_bucket')
+    #get_bucket(123)
