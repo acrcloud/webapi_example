@@ -25,8 +25,10 @@ $signature = base64_encode($signature);
 // suported file formats: mp3,wav,wma,amr,ogg, ape,acc,spx,m4a,mp4,FLAC, etc 
 // File size: < 1M , You'de better cut large file to small file, within 15 seconds data size is better
 $file = $argv[1];
-$filesize = filesize($file);
-$cfile = new CURLFile($file, "mp3", basename($argv[1]));
+//$filesize = filesize($file);
+//$cfile = new CURLFile($file, "mp3", basename($argv[1]));
+$content = file_get_contents($argv[1]);
+$filesize = strlen($content);
 
 $postfields = array(
                "sample" => $cfile, 
