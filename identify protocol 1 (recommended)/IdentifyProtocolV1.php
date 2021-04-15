@@ -31,7 +31,7 @@ $content = file_get_contents($argv[1]);
 $filesize = strlen($content);
 
 $postfields = array(
-               "sample" => $cfile, 
+               "sample" => $content, 
                "sample_bytes"=>$filesize, 
                "access_key"=>$access_key, 
                "data_type"=>$data_type, 
