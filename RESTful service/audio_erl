@@ -7,6 +7,7 @@
 %%it is loosely based on the audio.py python examples
 %%ideally the various functions can be put in an erlang library which can be exposed through an api
 %%it depends on the inets application and the ssl application so those have to be started first.
+%%A different http client can be used instead of httpc  like gun,hackney  in an actual application if decided
 %%
 %% @end
 %%%-------------------------------------------------------------------
@@ -22,14 +23,16 @@ main(_) ->
 	Acr_Secret_key = "xxx",
 	Acr_key = "xxx",
 	Api_version = "1",
-	Path_file = "xxx",%%file should be placed in current folder for testing
+	Path_file = "xxx",%%file should be placed in current folder for testing for use with upload_audio.
 	Bucket_name = "xxx",
 	Audio_title = "xxx",
 	Audio_id = "xxx",
 	Data_type = "xxx",%%audio or fingerprint
 	Custom_fields = [{fname,"fname"},{lname,"lname"}],%%first value of tuple should be atom,second value should be string
-	upload_audio(Acr_Host,Acr_Secret_key,Acr_key,Api_version,Path_file,Bucket_name,Audio_title,Audio_id,Data_type,Custom_fields).
-
+	%%upload_audio(Acr_Host,Acr_Secret_key,Acr_key,Api_version,Path_file,Bucket_name,Audio_title,Audio_id,Data_type,Custom_fields).
+	%%update_audio(Acr_Host,Acr_Secret_key,Acr_key,Sig_version,Bucket_name,Audio_title,Acr_id,Audio_id,Custom_fields).
+	%%delete_audio(Acr_Host,Acr_Secret_key,Acr_key,Sig_version,Acr_id).
+	%%get_audios(Acr_Host,Acr_Secret_key,Acr_key,Sig_version,Bucket_name,"1").
 
 
 
@@ -37,7 +40,6 @@ main(_) ->
 start_apps()->
 	{ok,_} = application:ensure_all_started(inets),
 	{ok,_} = application:ensure_all_started(ssl),
-	httpc:set_options([{proxy, {{"localhost", 8084},["abc.com"]}}]),
 	ok.
 
 	
@@ -70,18 +72,79 @@ upload_audio(URl_host,Access_secret,Access_key,Sig_version,Path_file,Bucket_name
 	Data_send = lists:append([Data,Key_accum_final,Value_accum_final]),
 	Body = format_multipart_formdata(Boundary,Data_send,[{audio_file, "audio_file", Audio_binary}]),
 	ContentType = lists:concat(["multipart/form-data; boundary=", Boundary]),
-	Headers=[
+	Headers = [
 				{"Content-length", integer_to_list(size(Body))},{"access-key",Access_key},
 				{"signature-version",Sig_version},{"signature",Signature},{"timestamp",Timestamp},{"Accept","*/*"}
-			],
-
+			  ],
 	Result = httpc:request(post, {Requrl, Headers,ContentType, Body}, [],  [{sync,true}]),
 	result_to_terms(Result).
 
 
+%%for getting audios for a particular bucket
+get_audios(URl_host,Access_secret,Access_key,Sig_version,Bucket,Page)->
+	Http_method = "GET",
+	Http_uri = "/v1/audios",
+	Timestamp = erlang:integer_to_list(calendar:datetime_to_gregorian_seconds(calendar:universal_time())-62167219200),
+	Signature = create_signature(Http_method,Http_uri,Access_key,Access_secret,Sig_version,Timestamp),
+	Headers = [{"access-key",Access_key},{"signature-version",Sig_version},{"signature",Signature},{"timestamp",Timestamp},{"Accept","*/*"}],
+	Query_string_escape = lists:append([edoc_lib:escape_uri("bucket_name"),"=",edoc_lib:escape_uri(Bucket),"&",edoc_lib:escape_uri("page"),"=",edoc_lib:escape_uri(Page)]),
+	Requrl = lists:append(["https://",URl_host,Http_uri,"?",Query_string_escape]),
+	Result = httpc:request(get, {Requrl, Headers}, [],  [{sync,true}]),
+	result_to_terms(Result).
+
+
+%%for updating a track on arclould
+update_audio(URl_host,Access_secret,Access_key,Sig_version,Bucket_name,Title,Acr_id,Audio_id,Custom_fields)->
+	Http_method = "PUT",
+	Http_uri = lists:append(["/v1/audios/",Acr_id]),
+	Timestamp = erlang:integer_to_list(calendar:datetime_to_gregorian_seconds(calendar:universal_time())-62167219200),
+	Signature = create_signature(Http_method,Http_uri,Access_key,Access_secret,Sig_version,Timestamp),
+	Requrl = lists:append(["https://",URl_host,Http_uri]),
+	Data = [
+				lists:append([edoc_lib:escape_uri("audio_id"),"=",edoc_lib:escape_uri(Audio_id)]),
+				lists:append([edoc_lib:escape_uri("title"),"=",edoc_lib:escape_uri( Title)]),
+				lists:append([edoc_lib:escape_uri("bucket_name"),"=",edoc_lib:escape_uri(Bucket_name)])	
+			],
+	[Key_accum_final,Value_accum_final] = create_custom_fields_update(Custom_fields),
+	Data_send = lists:append([Data,Key_accum_final,Value_accum_final]),
+	Body = string:join(Data_send,"&"),
+	ContentType = "application/x-www-form-urlencoded",
+	Headers = 
+	[
+		{"Content-length", integer_to_list(length(Body))},{"access-key",Access_key},
+		{"signature-version",Sig_version},{"signature",Signature},{"timestamp",Timestamp},{"Accept","*/*"}
+	],
+	Result = httpc:request(put, {Requrl, Headers,ContentType, Body}, [],  [{sync,true}]),
+	result_to_terms(Result).
+
+
+%%for deleting audio
+delete_audio(URl_host,Access_secret,Access_key,Sig_version,Acr_id)->
+	Http_method = "DELETE",
+	Http_uri = lists:append(["/v1/audios/",Acr_id]),
+	Timestamp = erlang:integer_to_list(calendar:datetime_to_gregorian_seconds(calendar:universal_time())-62167219200),
+	Signature = create_signature(Http_method,Http_uri,Access_key,Access_secret,Sig_version,Timestamp),
+	Requrl = lists:append(["https://",URl_host,Http_uri]),
+	Headers = [{"access-key",Access_key},{"signature-version",Sig_version},{"signature",Signature},{"timestamp",Timestamp},{"Accept","*/*"}],
+	Result = httpc:request(delete, {Requrl, Headers}, [],  [{sync,true}]),
+	result_to_terms(Result).
+
+
+
+%%for creating custom fields when doing an update of an uploaded track
+create_custom_fields_update(Custom_fields)->
+	lists:foldl(
+		fun({Key,Value},[Key_accum,Value_acccum])->  
+			 New_Key_Accum = [ lists:append([edoc_lib:escape_uri("custom_key[]"),"=",edoc_lib:escape_uri(atom_to_list(Key))]) | Key_accum],
+			 New_Value_Accum = [ lists:append([edoc_lib:escape_uri("custom_value[]"),"=",edoc_lib:escape_uri(Value)]) | Value_acccum],
+			[New_Key_Accum,New_Value_Accum]
+		end,
+	[[],[]],Custom_fields).
+
+
+
 %%for creating custom fields
 create_custom_fields(Custom_fields)->
-	[Key_accum_final,Value_accum_final] = 
 	lists:foldl(
 		fun({Key,Value},[Key_accum,Value_acccum])->  
 			 New_Key_Accum = [{'custom_key[]',atom_to_list(Key)}|Key_accum],
