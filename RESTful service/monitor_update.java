@@ -67,7 +67,7 @@ public class Update_monitor {
 
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
-			HttpPut httPut = new HttpPut(url);
+			HttpPut httpPut = new HttpPut(url);
 
 			if (headerParams != null) {
 				for (String key : headerParams.keySet()) {
@@ -109,12 +109,12 @@ public class Update_monitor {
                          String record, String accessKey, String accessSecret){
         String result = null;
         String reqUrl = "https://api.acrcloud.com/v1/monitor-streams/"+streamID;
-        String htttMethod = "PUT";
+        String httpMethod = "PUT";
         String httpAction = "/v1/monitor-streams/"+streamID;
         String signatureVersion = "1";
         String timestamp = this.getUTCTimeSeconds();
 
- 		String sigStr = htttMethod + "\n" + httpAction + "\n" + accessKey
+ 		String sigStr = httpMethod + "\n" + httpAction + "\n" + accessKey
 				+ "\n" + signatureVersion + "\n" + timestamp;
 		String signature = encryptByHMACSHA1(sigStr.getBytes(),
 				accessSecret.getBytes());
